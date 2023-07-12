@@ -13,6 +13,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+#        query:
+#          plan_cache_enabled: false
 logging:
   level:
     org:

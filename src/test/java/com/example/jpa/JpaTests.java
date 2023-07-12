@@ -58,19 +58,27 @@ class JpaTests {
         @Test
         @DisplayName("Should query correctly when a null parameter is passed first")
         void em_nullParameterFirst() {
-            Query query = em.createQuery(TestEntityRepository.QUERY);
-
-            assertThatCode(() -> query.setParameter("enabled", null).getResultList()).doesNotThrowAnyException();
-            assertThatCode(() -> query.setParameter("enabled", true).getResultList()).doesNotThrowAnyException();
+            assertThatCode(() -> {
+                Query query = em.createQuery(TestEntityRepository.QUERY);
+                query.setParameter("enabled", null).getResultList();
+            }).doesNotThrowAnyException();
+            assertThatCode(() -> {
+                Query query = em.createQuery(TestEntityRepository.QUERY);
+                query.setParameter("enabled", true).getResultList();
+            }).doesNotThrowAnyException();
         }
 
         @Test
         @DisplayName("Should query correctly when a non-null parameter is passed first")
         void em_nonNullParameterFirst() {
-            Query query = em.createQuery(TestEntityRepository.QUERY);
-
-            assertThatCode(() -> query.setParameter("enabled", true).getResultList()).doesNotThrowAnyException();
-            assertThatCode(() -> query.setParameter("enabled", null).getResultList()).doesNotThrowAnyException();
+            assertThatCode(() -> {
+                Query query = em.createQuery(TestEntityRepository.QUERY);
+                query.setParameter("enabled", true).getResultList();
+            }).doesNotThrowAnyException();
+            assertThatCode(() -> {
+                Query query = em.createQuery(TestEntityRepository.QUERY);
+                query.setParameter("enabled", null).getResultList();
+            }).doesNotThrowAnyException();
         }
 
         @Test
@@ -83,10 +91,14 @@ class JpaTests {
 
             BasicType<Boolean> type = typeHelper.getRegisteredType(Boolean.class);
 
-            Query query = em.createQuery(TestEntityRepository.QUERY);
-
-            assertThatCode(() -> query.setParameter("enabled", new TypedParameterValue<>(type, null)).getResultList()).doesNotThrowAnyException();
-            assertThatCode(() -> query.setParameter("enabled", true).getResultList()).doesNotThrowAnyException();
+            assertThatCode(() -> {
+                Query query = em.createQuery(TestEntityRepository.QUERY);
+                query.setParameter("enabled", new TypedParameterValue<>(type, null)).getResultList();
+            }).doesNotThrowAnyException();
+            assertThatCode(() -> {
+                Query query = em.createQuery(TestEntityRepository.QUERY);
+                query.setParameter("enabled", true).getResultList();
+            }).doesNotThrowAnyException();
         }
 
     }
