@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.query.TypedParameterValue;
+import org.hibernate.type.BasicType;
+import org.hibernate.type.BasicTypeRegistry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -67,6 +71,22 @@ class JpaTests {
 
             assertThatCode(() -> query.setParameter("enabled", true).getResultList()).doesNotThrowAnyException();
             assertThatCode(() -> query.setParameter("enabled", null).getResultList()).doesNotThrowAnyException();
+        }
+
+        @Test
+        @DisplayName("Should query correctly when a TypedParameterValue parameter is passed first")
+        void em_typedParameterValueParameterFirst() {
+            BasicTypeRegistry typeHelper = em.getEntityManagerFactory()
+                .unwrap(SessionFactoryImplementor.class)
+                .getTypeConfiguration()
+                .getBasicTypeRegistry();
+
+            BasicType<Boolean> type = typeHelper.getRegisteredType(Boolean.class);
+
+            Query query = em.createQuery(TestEntityRepository.QUERY);
+
+            assertThatCode(() -> query.setParameter("enabled", new TypedParameterValue<>(type, null)).getResultList()).doesNotThrowAnyException();
+            assertThatCode(() -> query.setParameter("enabled", true).getResultList()).doesNotThrowAnyException();
         }
 
     }
