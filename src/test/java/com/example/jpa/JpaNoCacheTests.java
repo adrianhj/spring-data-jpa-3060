@@ -18,12 +18,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.TestPropertySource;
 
-@DisplayName("JPA Tests (Query Plan Cache Enabled)")
+@DisplayName("JPA Tests (Query Plan Cache Disabled)")
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-class JpaTests {
+@TestPropertySource(properties = "spring.jpa.properties.hibernate.query.plan_cache_enabled=false")
+class JpaNoCacheTests {
 
     @Autowired
     TestEntityRepository repository;
